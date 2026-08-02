@@ -16,7 +16,7 @@ export const useStore = create((set, get) => ({
   error: null,
   
   // Simulation State
-  simulationTime: new Date('2024-11-11T12:00:00Z'), // Base starting time
+  simulationTime: new Date(), // Use current real date/time
   simulationSpeed: 1, // 1 real sec = 1 sim min
   isRunning: false,
   
@@ -37,17 +37,8 @@ export const useStore = create((set, get) => ({
         parseCSV('staff_shifts.csv', 'staff_shifts')
       ]);
       
-      // Determine earliest flight to set base simulation time
-      let baseTime = new Date('2024-11-11T12:00:00Z');
-      if (flightsData.length > 0) {
-        // Sort just to be absolutely sure we have the earliest flight
-        const sortedFlights = [...flightsData].sort((a, b) => a.scheduled_departure.localeCompare(b.scheduled_departure));
-        const firstFlightTime = parseISO(sortedFlights[0].scheduled_departure);
-        if (!isNaN(firstFlightTime)) {
-          // Start 30 minutes before the earliest flight so the feed has initial data
-          baseTime = addMinutes(firstFlightTime, -30); 
-        }
-      }
+      // Use current real date/time so dashboard always shows today's date
+      let baseTime = new Date();
 
       set({ 
         flights: flightsData, 

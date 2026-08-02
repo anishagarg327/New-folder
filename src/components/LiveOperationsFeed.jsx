@@ -17,8 +17,8 @@ export const LiveOperationsFeed = () => {
     const depTime = parseISO(f.scheduled_departure.replace(' ', 'T') + 'Z');
     const timeDiffMins = (depTime - simulationTime) / (1000 * 60);
 
-    // Only process flights roughly within the active operational window (-120 to +120 mins)
-    if (timeDiffMins > 120 || timeDiffMins < -120) return;
+    // Removed premature optimization that filtered out flights outside a narrow window.
+    // Since the dataset is sparse, we need to process all flights to ensure the feed always has the 30 most recent events.
 
     const times = {
       gate: new Date(depTime.getTime() - 60*60000),
@@ -46,9 +46,9 @@ export const LiveOperationsFeed = () => {
     }
   });
 
-  // Filter out future events and sort descending (NEWEST ON TOP)
+  // Filter out future events (unless a specific flight is selected) and sort descending (NEWEST ON TOP)
   const pastEvents = events
-    .filter(e => e.time <= simulationTime)
+    .filter(e => selectedFlightId ? true : e.time <= simulationTime)
     .sort((a, b) => b.time - a.time)
     .slice(0, 30); // keep last 30
 
@@ -64,9 +64,27 @@ export const LiveOperationsFeed = () => {
         <Activity size={16} color="var(--status-cyan)" />
         Live Operations Feed
         {selectedFlightId && (
-          <span className="pill" style={{ marginLeft: 'auto', background: 'var(--accent-blue-muted)', color: 'var(--status-cyan)', fontSize: '0.65rem' }}>
+          <div 
+            onClick={() => useStore.getState().setSelectedFlight(null)}
+            style={{ 
+              marginLeft: 'auto', 
+              background: 'var(--accent-blue-muted)', 
+              color: 'var(--status-cyan)', 
+              fontSize: '0.65rem',
+              padding: '0.2rem 0.5rem',
+              borderRadius: '4px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              border: '1px solid var(--border-light)'
+            }}
+            title="Clear filter"
+          >
             {selectedFlightId}
-          </span>
+            <span style={{ fontSize: '0.8rem', lineHeight: 1 }}>×</span>
+          </div>
         )}
       </div>
 

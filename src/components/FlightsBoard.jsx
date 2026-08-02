@@ -9,15 +9,16 @@ export const FlightsBoard = () => {
   
   const activeFlights = getActiveFlights();
 
-  const filteredFlights = activeFlights.filter(f => 
-    f.flight_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    f.airline.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    f.destination.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredFlights = searchTerm.trim() === '' ? activeFlights : activeFlights.filter(f => {
+    const term = searchTerm.toLowerCase();
+    return (f.flight_id && f.flight_id.toLowerCase().includes(term)) ||
+           (f.airline && f.airline.toLowerCase().includes(term)) ||
+           (f.destination && f.destination.toLowerCase().includes(term));
+  });
 
   // Determine dynamic status based on simulation time
   const getDynamicStatus = (flight) => {
-    const depTime = parseISO(flight.scheduled_departure);
+    const depTime = new Date(flight.scheduled_departure.replace(' ', 'T') + 'Z');
     const timeDiffMins = (depTime - simulationTime) / (1000 * 60);
 
     if (flight.status === 'Departed' && timeDiffMins > 0) return 'Scheduled';

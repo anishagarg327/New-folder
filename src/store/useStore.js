@@ -68,14 +68,14 @@ export const useStore = create((set, get) => ({
   getActiveFlights: () => {
     const { flights, simulationTime } = get();
     // Get flights that haven't landed more than 2 hours ago
-    const active = flights.filter(f => {
-       const arrival = parseISO(f.scheduled_arrival);
-       // Keep flights if their arrival time is after (simulationTime - 2 hours)
-       return arrival > addMinutes(simulationTime, -120);
-    });
+    const cutoffDate = addMinutes(simulationTime, -120);
+    // Convert to string format roughly matching CSV "YYYY-MM-DD HH:mm:ss"
+    const cutoffStr = cutoffDate.toISOString().replace('T', ' ').substring(0, 19);
     
-    // Sort by scheduled departure (closest first)
-    active.sort((a, b) => parseISO(a.scheduled_departure) - parseISO(b.scheduled_departure));
+    const active = flights.filter(f => f.scheduled_arrival > cutoffStr);
+    
+    // Sort by scheduled departure (closest first) using string comparison
+    active.sort((a, b) => a.scheduled_departure.localeCompare(b.scheduled_departure));
     
     return active;
   },
@@ -83,6 +83,17 @@ export const useStore = create((set, get) => ({
   // Operational Controls
   selectedFlightId: null,
   setSelectedFlight: (id) => set({ selectedFlightId: id }),
+  
+  theme: 'dark',
+  toggleTheme: () => set((state) => {
+    const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+    if (newTheme === 'light') {
+      document.body.classList.add('light-theme');
+    } else {
+      document.body.classList.remove('light-theme');
+    }
+    return { theme: newTheme };
+  }),
   
   resolveMaintenance: (workOrderId) => {
     const { maintenanceLogs, simulationTime } = get();

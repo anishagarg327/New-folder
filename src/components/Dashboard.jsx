@@ -8,7 +8,7 @@ import { FlightDetailsPanel } from './FlightDetailsPanel';
 import { Loader2, AlertTriangle } from 'lucide-react';
 
 export const Dashboard = () => {
-  const { loading, error, loadData, flights } = useStore();
+  const { loading, error, loadData, flights, getActiveFlights, maintenanceLogs, baggage } = useStore();
 
   useEffect(() => {
     loadData();
@@ -47,10 +47,26 @@ export const Dashboard = () => {
           
           <div className="glass-panel" style={{ flex: '0 0 auto' }}>
             <h2>System Overview</h2>
-            <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
                 <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Total Flights</div>
                 <div style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--accent-cyan)' }}>{flights.length}</div>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Active Board</div>
+                <div style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--accent-blue)' }}>{getActiveFlights().length}</div>
+              </div>
+              <div style={{ background: 'rgba(239, 68, 68, 0.05)', padding: '1rem', borderRadius: '8px', borderLeft: '2px solid var(--status-red)' }}>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Pending Alerts</div>
+                <div style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--status-red)' }}>
+                  {maintenanceLogs.filter(log => !log.completion_time).length}
+                </div>
+              </div>
+              <div style={{ background: 'rgba(16, 185, 129, 0.05)', padding: '1rem', borderRadius: '8px', borderLeft: '2px solid var(--status-green)' }}>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Bags Processed</div>
+                <div style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--status-green)' }}>
+                  {baggage.filter(b => b.current_status === 'Loaded').length}
+                </div>
               </div>
             </div>
           </div>

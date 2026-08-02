@@ -10,7 +10,7 @@ export const GateMap = () => {
   // An event is "active" if simulationTime is within timestamp and timestamp + duration_mins
   const activeEvents = gateEvents.filter(event => {
     if (!event.timestamp || !event.duration_mins) return false;
-    const start = parseISO(event.timestamp);
+    const start = new Date(event.timestamp.replace(' ', 'T') + 'Z');
     const end = new Date(start.getTime() + parseInt(event.duration_mins) * 60000);
     return simulationTime >= start && simulationTime <= end;
   });

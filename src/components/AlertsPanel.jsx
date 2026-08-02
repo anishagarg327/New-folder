@@ -11,15 +11,15 @@ export const AlertsPanel = () => {
   // Find all unresolved maintenance issues (or ones that were resolved after simulation time)
   const activeAlerts = maintenanceLogs.filter(log => {
     if (!log.report_time) return false;
-    const report = parseISO(log.report_time);
-    const completion = log.completion_time ? parseISO(log.completion_time) : null;
+    const report = new Date(log.report_time.replace(' ', 'T') + 'Z');
+    const completion = log.completion_time ? new Date(log.completion_time.replace(' ', 'T') + 'Z') : null;
     
     // Show issues reported up to 48 hours in the future (for simulation testing)
     // and those that haven't been resolved yet relative to sim time.
     const isNotResolvedYet = !completion || simulationTime < completion;
     
     return isNotResolvedYet;
-  }).sort((a, b) => parseISO(b.report_time) - parseISO(a.report_time));
+  }).sort((a, b) => b.report_time.localeCompare(a.report_time));
 
   return (
     <div className="glass-panel" style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column' }}>

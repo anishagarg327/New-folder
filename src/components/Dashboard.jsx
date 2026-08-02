@@ -54,10 +54,10 @@ export const Dashboard = () => {
 
           {/* LEFT COLUMN: Operations & Map */}
           <div className="left-column">
-            <div style={{ flex: '1 1 auto', display: 'flex', minHeight: 0 }}>
+            <div style={{ flex: '1 1 0%', display: 'flex', minHeight: 0, overflow: 'hidden' }}>
               <FlightsBoard />
             </div>
-            <div style={{ flex: '0 0 auto', height: '290px' }}>
+            <div style={{ flex: '0 0 auto' }}>
               <AirportMap />
             </div>
           </div>

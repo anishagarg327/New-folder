@@ -25,35 +25,35 @@ export const AoccHeader = () => {
       <div className="top-header">
         
         {/* Left Side: Branding & Health */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <h1 className="logo-text" style={{ margin: 0 }}>Airport Operations Control Center</h1>
             <div className="live-badge">LIVE</div>
           </div>
           
           {/* Divider */}
-          <div style={{ height: '32px', width: '1px', background: 'var(--border-light)' }}></div>
+          <div style={{ height: '28px', width: '1px', background: 'var(--border-light)' }}></div>
           
           {/* Health Score */}
           <div 
-            style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
             onClick={() => setHealthModalOpen(true)}
           >
-            <Activity color={healthColor} size={28} />
+            <Activity color={healthColor} size={22} />
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em', fontWeight: 600 }}>Health Score</span>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
-                <span style={{ fontSize: '1.25rem', fontWeight: 700, color: healthColor, lineHeight: 1 }}>{healthScore}%</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{healthText}</span>
+              <span style={{ fontSize: '0.6rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em', fontWeight: 600 }}>Health Score</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                <span style={{ fontSize: '1.1rem', fontWeight: 700, color: healthColor, lineHeight: 1 }}>{healthScore}%</span>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{healthText}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Center: Search */}
-        <div style={{ display: 'flex', alignItems: 'center', flex: 1, maxWidth: '400px', margin: '0 2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flex: 1, maxWidth: '280px', margin: '0 1rem', minWidth: '120px' }}>
           <div style={{ position: 'relative', width: '100%' }}>
-            <Search size={14} color="var(--text-muted)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+            <Search size={13} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
             <input 
               type="text" 
               className="search-input" 
@@ -65,11 +65,11 @@ export const AoccHeader = () => {
         </div>
 
         {/* Right Side: Clock, Controls, Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
           
           {/* Clock */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--status-cyan)', fontFamily: 'monospace', fontSize: '1.05rem', fontWeight: 600 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--status-cyan)', fontFamily: 'monospace', fontSize: '0.9rem', fontWeight: 600 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             {format(simulationTime, 'yyyy-MM-dd HH:mm')}
           </div>
           

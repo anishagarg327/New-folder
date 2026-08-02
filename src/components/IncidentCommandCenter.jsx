@@ -90,7 +90,7 @@ export const IncidentCommandCenter = () => {
   const displayIncidents = incidents.sort((a, b) => b.time - a.time).slice(0, 4);
 
   return (
-    <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '1rem', marginBottom: '1rem' }} className="hide-scrollbar">
+    <div style={{ display: 'flex', gap: '0.75rem', overflowX: 'auto', paddingBottom: '0.5rem', marginBottom: '0.5rem', flexShrink: 0 }} className="hide-scrollbar">
       <AnimatePresence>
         {displayIncidents.map(incident => {
           const Icon = incident.icon;
@@ -109,8 +109,8 @@ export const IncidentCommandCenter = () => {
                 border: `1px solid ${isCritical ? 'var(--status-red)' : 'var(--status-yellow)'}`,
                 boxShadow: isSelected ? `0 0 0 2px ${isCritical ? 'var(--status-red)' : 'var(--status-yellow)'}` : 'none',
                 borderRadius: '8px',
-                padding: '0.75rem 1rem',
-                minWidth: '220px',
+                padding: '0.5rem 0.75rem',
+                minWidth: '180px',
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '0.75rem',

@@ -102,27 +102,27 @@ export const AirportMap = () => {
   };
 
   return (
-    <div className="glass-panel" style={{ flex: '0 0 auto', height: '100%', display: 'flex', flexDirection: 'column', padding: '1rem 1.5rem', overflow: 'hidden' }}>
-      <div className="panel-header" style={{ justifyContent: 'space-between', marginBottom: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Cpu size={16} color="var(--accent-blue)" />
+    <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', padding: '0.75rem 1rem', overflow: 'hidden' }}>
+      <div className="panel-header" style={{ justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}>
+          <Cpu size={14} color="var(--accent-blue)" />
           Interactive Digital Twin
         </div>
-        <div style={{ display: 'flex', gap: '1rem', fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><div style={{ width: '8px', height: '8px', borderRadius: '2px', background: 'var(--status-green)' }}></div> Available</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><div style={{ width: '8px', height: '8px', borderRadius: '2px', background: 'var(--accent-blue)' }}></div> Boarding</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><div style={{ width: '8px', height: '8px', borderRadius: '2px', background: 'var(--status-yellow)' }}></div> Delayed</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><div style={{ width: '8px', height: '8px', borderRadius: '2px', background: 'var(--status-red)' }}></div> Maint.</div>
+        <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.6rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><div style={{ width: '7px', height: '7px', borderRadius: '2px', background: 'var(--status-green)' }}></div> Available</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><div style={{ width: '7px', height: '7px', borderRadius: '2px', background: 'var(--accent-blue)' }}></div> Boarding</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><div style={{ width: '7px', height: '7px', borderRadius: '2px', background: 'var(--status-yellow)' }}></div> Delayed</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><div style={{ width: '7px', height: '7px', borderRadius: '2px', background: 'var(--status-red)' }}></div> Maint.</div>
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1, justifyContent: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         {TERMINALS.map(terminal => (
-          <div key={terminal.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ width: '100px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <div key={terminal.id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ width: '80px', fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', flexShrink: 0 }}>
               {terminal.name}
             </div>
-            <div style={{ display: 'flex', flex: 1, gap: '0.5rem', background: 'var(--bg-surface)', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
+            <div style={{ display: 'flex', flex: 1, gap: '0.4rem', background: 'var(--bg-surface)', padding: '0.4rem', borderRadius: '6px', border: '1px solid var(--border-light)', minWidth: 0 }}>
               {terminal.gates.map(gate => {
                 const state = getGateState(gate);
                 const isSelected = selectedGate === gate;
@@ -134,7 +134,7 @@ export const AirportMap = () => {
                     onMouseLeave={() => setHoveredGate(null)}
                     onClick={() => setSelectedGate(isSelected ? null : gate)}
                     style={{ 
-                      flex: 1, height: '44px', position: 'relative', cursor: 'pointer',
+                      flex: 1, height: '38px', position: 'relative', cursor: 'pointer',
                       background: isSelected ? 'var(--bg-surface-hover)' : 'var(--bg-surface)',
                       border: `1px solid ${isSelected ? state.color : 'var(--border-light)'}`, 
                       borderTop: `3px solid ${state.color}`,
@@ -142,11 +142,12 @@ export const AirportMap = () => {
                       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                       transition: 'all 0.15s ease',
                       boxShadow: isSelected ? `0 0 12px ${state.color}40` : 'none',
-                      zIndex: isSelected ? 10 : 1
+                      zIndex: isSelected ? 10 : 1,
+                      minWidth: 0
                     }}
                   >
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-main)' }}>{gate}</div>
-                    {state.flight && <div style={{ fontSize: '0.6rem', color: state.color, marginTop: '2px', fontWeight: 600 }}>{state.flight.split('-')[1] || state.flight}</div>}
+                    <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-main)' }}>{gate}</div>
+                    {state.flight && <div style={{ fontSize: '0.55rem', color: state.color, marginTop: '1px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{state.flight.split('-')[1] || state.flight}</div>}
                     
                     <AnimatePresence>
                       {hoveredGate === gate && state.flight && (

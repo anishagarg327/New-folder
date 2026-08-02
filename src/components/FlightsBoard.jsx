@@ -127,38 +127,38 @@ export const FlightsBoard = () => {
 
   return (
     <>
-      <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, padding: '1.25rem' }}>
+      <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, padding: '0.75rem 1rem', overflow: 'hidden' }}>
 
         {/* Header & Search */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, fontSize: '1.05rem', fontWeight: 700 }}>
             Flight Operations
             <span className="pill-count">
               {filteredAndSortedFlights.length}
             </span>
           </h2>
 
-          <div style={{ position: 'relative', width: '250px' }}>
-            <Search size={14} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
+          <div style={{ position: 'relative', width: '200px', minWidth: '140px' }}>
+            <Search size={13} color="var(--text-muted)" style={{ position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
               placeholder="Search flights, airlines..."
               value={globalSearchTerm || ''}
               onChange={(e) => useStore.getState().setGlobalSearchTerm(e.target.value)}
               className="search-input"
-              style={{ paddingLeft: '2rem' }}
+              style={{ paddingLeft: '1.75rem' }}
             />
           </div>
         </div>
 
         {/* Filters */}
-        <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '1rem' }} className="hide-scrollbar">
+        <div style={{ display: 'flex', gap: '0.35rem', overflowX: 'auto', paddingBottom: '0.5rem', flexShrink: 0 }} className="hide-scrollbar">
           {FILTERS.map(filter => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
               className={`control-btn ${activeFilter === filter ? 'active' : ''}`}
-              style={{ borderRadius: '999px', padding: '0.35rem 1rem' }}
+              style={{ borderRadius: '999px', padding: '0.25rem 0.75rem' }}
             >
               {filter}
             </button>

@@ -59,7 +59,7 @@ export const LiveOperationsFeed = () => {
   }, [pastEvents.length]);
 
   return (
-    <div className="glass-panel" style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', padding: '1.25rem', minHeight: '200px', border: selectedIncident ? '1px solid var(--status-cyan)' : '' }}>
+    <div className="glass-panel" style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', padding: '0.75rem 1rem', minHeight: '150px', border: selectedIncident ? '1px solid var(--status-cyan)' : '' }}>
       <div className="panel-header">
         <Activity size={16} color="var(--status-cyan)" />
         Live Operations Feed

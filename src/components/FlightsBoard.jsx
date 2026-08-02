@@ -11,7 +11,7 @@ export const FlightsBoard = () => {
   const { getActiveFlights, simulationTime, setSelectedFlight, selectedFlightId, getFlightAlerts, globalSearchTerm } = useStore();
   const [activeFilter, setActiveFilter] = useState('All Flights');
   const [sortConfig, setSortConfig] = useState({ key: 'scheduled_departure', direction: 'asc' });
-  
+
   const activeFlights = getActiveFlights();
 
   // Get the full selected flight object
@@ -28,7 +28,7 @@ export const FlightsBoard = () => {
     if (flight.status === 'Departed' && timeDiffMins > 0) return 'Scheduled';
     if (timeDiffMins <= 45 && timeDiffMins > 0) return 'Boarding';
     if (timeDiffMins <= 0) {
-       return Number(flight.delay_minutes) > 0 ? 'Delayed' : 'Departed';
+      return Number(flight.delay_minutes) > 0 ? 'Delayed' : 'Departed';
     }
     return flight.status;
   };
@@ -39,7 +39,7 @@ export const FlightsBoard = () => {
     // Apply Search
     if (globalSearchTerm && globalSearchTerm.trim() !== '') {
       const term = globalSearchTerm.toLowerCase();
-      result = result.filter(f => 
+      result = result.filter(f =>
         (f.flight_id && f.flight_id.toLowerCase().includes(term)) ||
         (f.airline && f.airline.toLowerCase().includes(term)) ||
         (f.destination && f.destination.toLowerCase().includes(term)) ||
@@ -53,10 +53,10 @@ export const FlightsBoard = () => {
         const status = getDynamicStatus(f);
         // We only need to check alerts if the activeFilter is 'Maintenance'
         // Otherwise, avoid calling it inside the loop for massive performance gain.
-        const hasMaintenanceAlert = activeFilter === 'Maintenance' 
-          ? getFlightAlerts(f.flight_id).length > 0 
+        const hasMaintenanceAlert = activeFilter === 'Maintenance'
+          ? getFlightAlerts(f.flight_id).length > 0
           : false;
-          
+
         switch (activeFilter) {
           case 'Delayed': return Number(f.delay_minutes) > 0;
           case 'Boarding': return status === 'Boarding';
@@ -75,13 +75,13 @@ export const FlightsBoard = () => {
     result.sort((a, b) => {
       let aVal = a[sortConfig.key];
       let bVal = b[sortConfig.key];
-      
+
       // Handle numeric and specific sorts
       if (sortConfig.key === 'delay_minutes') {
         aVal = Number(aVal) || 0;
         bVal = Number(bVal) || 0;
       }
-      
+
       if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
       if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
       return 0;
@@ -128,7 +128,7 @@ export const FlightsBoard = () => {
   return (
     <>
       <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, padding: '1.25rem' }}>
-        
+
         {/* Header & Search */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
           <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>
@@ -137,12 +137,12 @@ export const FlightsBoard = () => {
               {filteredAndSortedFlights.length}
             </span>
           </h2>
-          
+
           <div style={{ position: 'relative', width: '250px' }}>
             <Search size={14} color="var(--text-muted)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
-            <input 
-              type="text" 
-              placeholder="Search flights, airlines..." 
+            <input
+              type="text"
+              placeholder="Search flights, airlines..."
               value={globalSearchTerm || ''}
               onChange={(e) => useStore.getState().setGlobalSearchTerm(e.target.value)}
               className="search-input"
@@ -164,7 +164,7 @@ export const FlightsBoard = () => {
             </button>
           ))}
         </div>
-        
+
         {/* Table */}
         <div className="table-wrapper">
           <table className="data-table">
@@ -200,15 +200,15 @@ export const FlightsBoard = () => {
                   const isSelected = selectedFlightId === f.flight_id;
                   const alerts = getFlightAlerts(f.flight_id);
                   const isPriority = Number(f.delay_minutes) > 45 || alerts.length > 0;
-                  
+
                   return (
-                    <motion.tr 
+                    <motion.tr
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      key={f.flight_id} 
+                      key={f.flight_id}
                       onClick={() => setSelectedFlight(f.flight_id)}
-                      style={{ 
+                      style={{
                         cursor: 'pointer',
                         background: isSelected ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
                       }}

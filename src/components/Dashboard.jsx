@@ -46,12 +46,12 @@ export const Dashboard = () => {
   return (
     <div className="app-container">
       <AoccHeader />
-      
+
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
         <IncidentCommandCenter />
-        
+
         <div className="main-grid">
-          
+
           {/* LEFT COLUMN: Operations & Map */}
           <div className="left-column">
             <div style={{ flex: '1 1 auto', display: 'flex', minHeight: 0 }}>
@@ -61,7 +61,7 @@ export const Dashboard = () => {
               <AirportMap />
             </div>
           </div>
-          
+
           {/* RIGHT COLUMN: Intelligence & Resources */}
           <div className="right-column hide-scrollbar">
             <LiveOperationsFeed />
@@ -71,7 +71,7 @@ export const Dashboard = () => {
 
         </div>
       </div>
-      
+
       {/* Slide-in Panels */}
       <GateDetailsPanel />
     </div>

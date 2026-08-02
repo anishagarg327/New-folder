@@ -17,7 +17,10 @@ export const SimulationControls = () => {
   }, [isRunning, tick]);
 
   return (
-    <div className="glass-panel header">
+    <div className="glass-panel SimulationControls-container" style={{ 
+      marginBottom: '1.5rem', 
+      display: 'flex', 
+      justifyContent: 'space-between', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <h1 style={{ margin: 0 }}>AOCC Dashboard</h1>
         <div className="badge" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', marginLeft: '1rem' }}>

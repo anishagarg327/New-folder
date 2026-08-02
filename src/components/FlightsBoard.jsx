@@ -64,7 +64,7 @@ export const FlightsBoard = () => {
             style={{ 
               background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)',
               borderRadius: '6px', padding: '0.5rem 0.5rem 0.5rem 2rem', color: 'white',
-              width: '250px', outline: 'none'
+              width: '100%', maxWidth: '250px', outline: 'none'
             }}
           />
         </div>

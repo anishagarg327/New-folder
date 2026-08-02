@@ -1,22 +1,32 @@
 import React, { useEffect } from 'react';
 import { useStore } from '../store/useStore';
-import { SimulationControls } from './SimulationControls';
+import { AoccHeader } from './AoccHeader';
+import { IncidentCommandCenter } from './IncidentCommandCenter';
+import { LiveOperationsFeed } from './LiveOperationsFeed';
 import { FlightsBoard } from './FlightsBoard';
-import { GateMap } from './GateMap';
-import { AlertsPanel } from './AlertsPanel';
-import { FlightDetailsPanel } from './FlightDetailsPanel';
+import { AirportMap } from './AirportMap';
+import { DecisionSupport } from './DecisionSupport';
+import { ResourceStatus } from './ResourceStatus';
+import { GateDetailsPanel } from './GateDetailsPanel';
 import { Loader2, AlertTriangle } from 'lucide-react';
 
 export const Dashboard = () => {
-  const { loading, error, loadData, flights, getActiveFlights, maintenanceLogs, baggage } = useStore();
+  const { loading, error, loadData, tick } = useStore();
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      tick();
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [tick]);
+
   if (loading) {
     return (
-      <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '1rem', background: 'var(--bg-dark)' }}>
         <Loader2 className="animate-spin" size={48} color="var(--accent-blue)" />
         <h2 style={{ color: 'var(--text-muted)' }}>Initializing AOCC...</h2>
       </div>
@@ -25,7 +35,7 @@ export const Dashboard = () => {
 
   if (error) {
     return (
-      <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '1rem', color: 'var(--status-red)' }}>
+      <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '1rem', color: 'var(--status-red)', background: 'var(--bg-dark)' }}>
         <AlertTriangle size={48} />
         <h2>Data Integration Error</h2>
         <p>{error}</p>
@@ -35,48 +45,35 @@ export const Dashboard = () => {
 
   return (
     <div className="app-container">
-      <SimulationControls />
+      <AoccHeader />
       
-      <div className="main-grid">
-        <div className="left-column">
-          <FlightsBoard />
-        </div>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
+        <IncidentCommandCenter />
         
-        {/* Right column for Gates / Alerts */}
-        <div className="right-column">
+        <div className="main-grid">
           
-          <div className="glass-panel" style={{ flex: '0 0 auto' }}>
-            <h2>System Overview</h2>
-            <div style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Total Flights</div>
-                <div style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--accent-cyan)' }}>{flights.length}</div>
-              </div>
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px' }}>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Active Board</div>
-                <div style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--accent-blue)' }}>{getActiveFlights().length}</div>
-              </div>
-              <div style={{ background: 'rgba(239, 68, 68, 0.05)', padding: '1rem', borderRadius: '8px', borderLeft: '2px solid var(--status-red)' }}>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Pending Alerts</div>
-                <div style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--status-red)' }}>
-                  {maintenanceLogs.filter(log => !log.completion_time).length}
-                </div>
-              </div>
-              <div style={{ background: 'rgba(16, 185, 129, 0.05)', padding: '1rem', borderRadius: '8px', borderLeft: '2px solid var(--status-green)' }}>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Bags Processed</div>
-                <div style={{ fontSize: '2rem', fontWeight: 600, color: 'var(--status-green)' }}>
-                  {baggage.filter(b => b.current_status === 'Loaded').length}
-                </div>
-              </div>
+          {/* LEFT COLUMN: Operations & Map */}
+          <div className="left-column">
+            <div style={{ flex: '1 1 auto', display: 'flex', minHeight: 0 }}>
+              <FlightsBoard />
+            </div>
+            <div style={{ flex: '0 0 auto', height: '240px' }}>
+              <AirportMap />
             </div>
           </div>
           
-          <GateMap />
-          <AlertsPanel />
-          
+          {/* RIGHT COLUMN: Intelligence & Resources */}
+          <div className="right-column hide-scrollbar">
+            <LiveOperationsFeed />
+            <ResourceStatus />
+            <DecisionSupport />
+          </div>
+
         </div>
       </div>
-      <FlightDetailsPanel />
+      
+      {/* Slide-in Panels */}
+      <GateDetailsPanel />
     </div>
   );
 };

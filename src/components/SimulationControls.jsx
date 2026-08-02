@@ -34,7 +34,7 @@ export const SimulationControls = () => {
           {format(simulationTime, 'yyyy-MM-dd HH:mm')}
         </div>
         
-        <button className="btn" onClick={toggleTheme} title="Toggle Theme" style={{ padding: '0.5rem', borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }}>
+        <button className="btn" onClick={toggleTheme} title="Toggle Theme" style={{ padding: '0.5rem', borderRadius: '50%' }}>
           {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 

@@ -4,9 +4,9 @@ import { Map, Plane, AlertTriangle, Hammer, Users, ShieldAlert, Cpu } from 'luci
 import { motion, AnimatePresence } from 'framer-motion';
 
 const TERMINALS = [
-  { id: '1', name: 'Main Terminal', gates: ['G1', 'G2', 'G3', 'G4', 'G5'] },
-  { id: '2', name: 'Terminal 2', gates: ['G6', 'G7', 'G8', 'G9', 'G10'] },
-  { id: '3', name: 'Terminal 3', gates: ['G11', 'G12', 'G13', 'G14', 'G15'] }
+  { id: '1', name: 'Terminal 1', gates: ['B3', 'B4', 'B6', 'B7', 'B9'] },
+  { id: '2', name: 'Terminal 2', gates: ['B10', 'B11', 'B12', 'B13', 'B15'] },
+  { id: '3', name: 'Terminal 3', gates: ['B17', 'B18', 'B23', 'B29', 'B32'] }
 ];
 
 export const AirportMap = () => {

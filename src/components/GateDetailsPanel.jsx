@@ -10,8 +10,6 @@ export const GateDetailsPanel = () => {
     simulationTime, getFlightBaggage, getFlightAlerts 
   } = useStore();
 
-  if (!selectedGate) return null;
-
   // Find all events for this gate
   const eventsForGate = useMemo(() => {
     return gateEvents
@@ -23,6 +21,8 @@ export const GateDetailsPanel = () => {
       }))
       .sort((a, b) => a.start - b.start);
   }, [gateEvents, selectedGate]);
+
+  if (!selectedGate) return null;
 
   const activeEvent = eventsForGate.find(e => simulationTime >= e.start && simulationTime <= e.end);
   const nextEvent = eventsForGate.find(e => e.start > simulationTime);
@@ -197,6 +197,44 @@ export const GateDetailsPanel = () => {
                 {(!activeFlight || (alerts.length === 0 && (!activeFlight || Number(activeFlight.delay_minutes) <= 30))) && (
                   <div style={{ color: 'var(--status-green)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <CheckCircle2 size={16} /> Gate operations normal.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div style={{ marginTop: '2rem' }}>
+              <h3 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Clock size={16} /> Full Day Schedule
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {eventsForGate.map((e, idx) => {
+                  const isPast = simulationTime > e.end;
+                  const isCurrent = simulationTime >= e.start && simulationTime <= e.end;
+                  const flight = flights.find(f => f.flight_id === e.flight_id);
+                  
+                  return (
+                    <div key={idx} style={{ 
+                      display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem', 
+                      background: isCurrent ? 'rgba(59, 130, 246, 0.1)' : 'var(--bg-surface)', 
+                      borderRadius: '8px',
+                      border: isCurrent ? '1px solid var(--accent-blue)' : '1px solid var(--border-light)',
+                      opacity: isPast ? 0.5 : 1
+                    }}>
+                      <div style={{ fontSize: '0.85rem', fontFamily: 'monospace', color: 'var(--text-muted)', width: '90px' }}>
+                        {format(e.start, 'HH:mm')} - {format(e.end, 'HH:mm')}
+                      </div>
+                      <div style={{ fontWeight: 600, flex: 1, color: isCurrent ? 'var(--accent-blue)' : 'var(--text-main)' }}>
+                        {e.flight_id}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', background: 'var(--bg-panel)', borderRadius: '4px', border: '1px solid var(--border-light)' }}>
+                        {flight ? `${flight.origin} → ${flight.destination}` : 'Unknown'}
+                      </div>
+                    </div>
+                  );
+                })}
+                {eventsForGate.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)', background: 'var(--bg-surface)', borderRadius: '8px' }}>
+                    No events scheduled for this gate today
                   </div>
                 )}
               </div>

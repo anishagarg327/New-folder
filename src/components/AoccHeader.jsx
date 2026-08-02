@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Play, Pause, Search, Bell, Sun, Moon, X, Activity } from 'lucide-react';
+import { Play, Pause, Search, Bell, Sun, Moon, X, Activity, AlertTriangle, Shield } from 'lucide-react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 
@@ -8,6 +8,7 @@ export const AoccHeader = () => {
   const { isRunning, simulationTime, simulationSpeed, toggleSimulation, setSimulationSpeed, getHealthScore, theme, toggleTheme, globalSearchTerm, setGlobalSearchTerm } = useStore();
   const healthScore = getHealthScore();
   const [isHealthModalOpen, setHealthModalOpen] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   let healthColor = 'var(--status-green)';
   let healthText = 'Stable';
@@ -108,13 +109,71 @@ export const AoccHeader = () => {
           </div>
 
           {/* Icons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <button className="icon-btn">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative' }}>
+            <button 
+              className="icon-btn" 
+              onClick={() => setShowNotifications(!showNotifications)}
+              style={{ position: 'relative' }}
+            >
               <Bell size={16} />
+              {/* Notification Badge */}
+              <span style={{ position: 'absolute', top: '4px', right: '4px', width: '6px', height: '6px', background: 'var(--status-red)', borderRadius: '50%' }}></span>
             </button>
             <button className="icon-btn" onClick={toggleTheme}>
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
+
+            {/* Notification Dropdown */}
+            {showNotifications && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                style={{
+                  position: 'absolute', top: '100%', right: '40px', marginTop: '10px',
+                  width: '320px', maxHeight: '400px', overflowY: 'auto',
+                  background: 'var(--bg-panel)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
+                  border: '1px solid var(--glass-border)', borderRadius: '12px',
+                  boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 1000,
+                  display: 'flex', flexDirection: 'column'
+                }}
+                className="hide-scrollbar"
+              >
+                <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600 }}>Recent Alerts</h3>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--accent-blue)', background: 'rgba(59, 130, 246, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>LIVE</span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  {/* Simulate 3 recent notifications based on simulation time */}
+                  <div style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.02)', display: 'flex', gap: '0.75rem', cursor: 'pointer', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                    <div style={{ color: 'var(--status-red)', marginTop: '2px' }}><AlertTriangle size={16} /></div>
+                    <div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.2rem' }}>Critical Maintenance Alert</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Hydraulic leak reported on SG-8853. Grounding immediately.</div>
+                      <div style={{ fontSize: '0.65rem', color: 'var(--status-red)', marginTop: '0.4rem', fontWeight: 600 }}>Just now</div>
+                    </div>
+                  </div>
+                  
+                  <div style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.02)', display: 'flex', gap: '0.75rem', cursor: 'pointer', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                    <div style={{ color: 'var(--status-yellow)', marginTop: '2px' }}><Activity size={16} /></div>
+                    <div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.2rem' }}>Baggage Loading Delay</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Gate B4 is experiencing a 15-minute delay in baggage loading.</div>
+                      <div style={{ fontSize: '0.65rem', color: 'var(--status-yellow)', marginTop: '0.4rem', fontWeight: 600 }}>2 mins ago</div>
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1rem', display: 'flex', gap: '0.75rem', cursor: 'pointer', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                    <div style={{ color: 'var(--status-cyan)', marginTop: '2px' }}><Shield size={16} /></div>
+                    <div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.2rem' }}>Security Sweep Complete</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Terminal 3 Sector A cleared by security teams.</div>
+                      <div style={{ fontSize: '0.65rem', color: 'var(--status-cyan)', marginTop: '0.4rem', fontWeight: 600 }}>15 mins ago</div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </div>
 
         </div>

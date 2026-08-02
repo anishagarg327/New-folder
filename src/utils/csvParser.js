@@ -38,7 +38,8 @@ export const parseCSV = async (filename, type) => {
         header: true,
         skipEmptyLines: true,
         complete: (results) => {
-          const mappedData = results.data.map(row => {
+          const TERMINALS = ['B3', 'B4', 'B6', 'B7', 'B9', 'B10', 'B11', 'B12', 'B13', 'B15', 'B17', 'B18', 'B23', 'B29', 'B32'];
+          const mappedData = results.data.map((row, idx) => {
             const newRow = {};
             const schema = SCHEMAS[type];
             if (schema) {
@@ -47,6 +48,10 @@ export const parseCSV = async (filename, type) => {
               });
             } else {
               Object.keys(row).forEach(k => newRow[`col_${k}`] = row[k]);
+            }
+            // Distribute gate events across all gates to make the UI look alive
+            if (type === 'gate_events' && newRow.gate === 'B12') {
+              newRow.gate = TERMINALS[idx % TERMINALS.length];
             }
             return newRow;
           });

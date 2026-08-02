@@ -162,6 +162,24 @@ export const useStore = create((set, get) => ({
     return incidents.sort((a, b) => b.time.localeCompare(a.time)).slice(0, 5);
   },
 
+  getFlightBaggage: (flightId) => {
+    const flightBags = get().baggage.filter(b => b.flight_id === flightId);
+    return {
+      total: flightBags.length,
+      loaded: flightBags.filter(b => b.current_status === 'Loaded').length,
+      delayed: flightBags.filter(b => b.current_status === 'Delayed').length
+    };
+  },
+
+  getFlightAlerts: (flightId) => {
+    const { maintenanceLogs, simulationTime } = get();
+    return maintenanceLogs.filter(m => {
+      const report = parseISO(m.report_time);
+      const completion = m.completion_time ? parseISO(m.completion_time) : null;
+      return m.flight_id === flightId && simulationTime >= report && (!completion || simulationTime < completion);
+    });
+  },
+
   getLiveFeed: () => {
     const { flights, simulationTime } = get();
     const feed = [];

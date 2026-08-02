@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { Play, Pause, Search, Bell, Sun, Moon, X, Activity, AlertTriangle, Shield } from 'lucide-react';
 import { format } from 'date-fns';
@@ -9,6 +9,18 @@ export const AoccHeader = () => {
   const healthScore = getHealthScore();
   const [isHealthModalOpen, setHealthModalOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const notifRef = useRef(null);
+
+  useEffect(() => {
+    if (!showNotifications) return;
+    const handleClickOutside = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showNotifications]);
 
   let healthColor = 'var(--status-green)';
   let healthText = 'Stable';
@@ -109,7 +121,7 @@ export const AoccHeader = () => {
           </div>
 
           {/* Icons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative' }}>
+          <div ref={notifRef} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative' }}>
             <button 
               className="icon-btn" 
               onClick={() => setShowNotifications(!showNotifications)}

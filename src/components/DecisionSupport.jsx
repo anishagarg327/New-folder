@@ -32,7 +32,7 @@ export const DecisionSupport = () => {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         {recommendations.length === 0 ? (
-          <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)', background: 'rgba(0,0,0,0.1)', borderRadius: '6px', fontSize: '0.8rem' }}>
+          <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)', background: 'var(--bg-surface)', borderRadius: '6px', fontSize: '0.8rem' }}>
             <CheckCircle2 size={24} style={{ margin: '0 auto 0.5rem', color: 'var(--status-green)', opacity: 0.5 }} />
             Operations Normal. No insights active.
           </div>
@@ -48,8 +48,8 @@ export const DecisionSupport = () => {
                 key={rec.id} 
                 onClick={() => rec.relatedFlight && useStore.getState().setSelectedFlight(rec.relatedFlight)}
                 style={{ 
-                  background: isSelected ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.02)', 
-                  border: '1px solid rgba(255,255,255,0.04)',
+                  background: isSelected ? 'var(--bg-surface-hover)' : 'var(--bg-surface)', 
+                  border: '1px solid var(--border-light)',
                   borderLeft: `3px solid ${getPriorityColor(rec.priority)}`,
                   borderRadius: '0 8px 8px 0',
                   padding: '0.6rem 0.75rem',
@@ -64,8 +64,8 @@ export const DecisionSupport = () => {
                   </div>
                 </div>
                 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.2)', padding: '0.35rem 0.5rem', borderRadius: '4px' }}>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-surface)', padding: '0.35rem 0.5rem', borderRadius: '4px' }}>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                     <ArrowRight size={10} /> <span style={{ fontWeight: 600 }}>Action:</span> {rec.action}
                   </div>
                 </div>

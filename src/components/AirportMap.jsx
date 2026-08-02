@@ -77,14 +77,14 @@ export const AirportMap = () => {
         animate={{ opacity: 1, y: 0 }}
         style={{
           position: 'absolute', top: '-180px', left: '50%', transform: 'translateX(-50%)',
-          width: '240px', background: 'var(--bg-panel)', border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: '8px', padding: '1rem', zIndex: 50, boxShadow: '0 10px 30px rgba(0,0,0,0.8)',
+          width: '240px', background: 'var(--bg-panel)', border: '1px solid var(--border-light)',
+          borderRadius: '8px', padding: '1rem', zIndex: 50, boxShadow: 'var(--glass-shadow)',
           pointerEvents: 'none'
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
           <div style={{ fontWeight: 700, color: gateState.color }}>{gateState.flight}</div>
-          <div style={{ fontSize: '0.75rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(255,255,255,0.1)' }}>{flight.airline_code}</div>
+          <div style={{ fontSize: '0.75rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'var(--bg-surface)' }}>{flight.airline_code}</div>
         </div>
         <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>{flight.origin} → {flight.destination}</div>
         
@@ -96,7 +96,7 @@ export const AirportMap = () => {
           <div style={{ gridColumn: '1 / -1' }}><span style={{ color: 'var(--text-muted)' }}>Assigned Staff:</span> {groundStaff} Ground Crew</div>
         </div>
         
-        <div style={{ position: 'absolute', bottom: '-6px', left: '50%', transform: 'translateX(-50%) rotate(45deg)', width: '12px', height: '12px', background: 'var(--bg-panel)', borderRight: '1px solid rgba(255,255,255,0.1)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}></div>
+        <div style={{ position: 'absolute', bottom: '-6px', left: '50%', transform: 'translateX(-50%) rotate(45deg)', width: '12px', height: '12px', background: 'var(--bg-panel)', borderRight: '1px solid var(--border-light)', borderBottom: '1px solid var(--border-light)' }}></div>
       </motion.div>
     );
   };
@@ -122,7 +122,7 @@ export const AirportMap = () => {
             <div style={{ width: '100px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               {terminal.name}
             </div>
-            <div style={{ display: 'flex', flex: 1, gap: '0.5rem', background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.03)' }}>
+            <div style={{ display: 'flex', flex: 1, gap: '0.5rem', background: 'var(--bg-surface)', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-light)' }}>
               {terminal.gates.map(gate => {
                 const state = getGateState(gate);
                 const isSelected = selectedGate === gate;
@@ -135,8 +135,8 @@ export const AirportMap = () => {
                     onClick={() => setSelectedGate(isSelected ? null : gate)}
                     style={{ 
                       flex: 1, height: '44px', position: 'relative', cursor: 'pointer',
-                      background: isSelected ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.02)',
-                      border: `1px solid ${isSelected ? state.color : 'rgba(255,255,255,0.05)'}`, 
+                      background: isSelected ? 'var(--bg-surface-hover)' : 'var(--bg-surface)',
+                      border: `1px solid ${isSelected ? state.color : 'var(--border-light)'}`, 
                       borderTop: `3px solid ${state.color}`,
                       borderRadius: '4px',
                       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',

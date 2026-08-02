@@ -73,7 +73,7 @@ export const useStore = create((set, get) => ({
   },
 
   toggleSimulation: () => set((state) => ({ isRunning: !state.isRunning })),
-  setSimulationSpeed: (speed) => set({ simulationSpeed: speed }),
+  setSimulationSpeed: (speed) => set({ simulationSpeed: speed, isRunning: true }),
   
   // Selectors/Computed Data
   // Returns upcoming and currently active flights
@@ -282,10 +282,21 @@ export const useStore = create((set, get) => ({
     }
 
     // Deduplicate and return top 3
-    return recommendations.sort((a,b) => {
+    const sortedRecs = recommendations.sort((a,b) => {
       const p = { 'Critical': 3, 'High': 2, 'Medium': 1 };
       return p[b.priority] - p[a.priority];
-    }).filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i).slice(0, 3);
+    });
+    
+    const uniqueIds = new Set();
+    const result = [];
+    for (const rec of sortedRecs) {
+      if (!uniqueIds.has(rec.id)) {
+        uniqueIds.add(rec.id);
+        result.push(rec);
+        if (result.length === 3) break;
+      }
+    }
+    return result;
   },
   
   theme: 'dark',

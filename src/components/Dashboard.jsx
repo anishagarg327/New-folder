@@ -57,7 +57,7 @@ export const Dashboard = () => {
             <div style={{ flex: '1 1 auto', display: 'flex', minHeight: 0 }}>
               <FlightsBoard />
             </div>
-            <div style={{ flex: '0 0 auto', height: '240px' }}>
+            <div style={{ flex: '0 0 auto', height: '290px' }}>
               <AirportMap />
             </div>
           </div>

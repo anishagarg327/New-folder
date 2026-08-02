@@ -51,17 +51,21 @@ export const FlightsBoard = () => {
     if (activeFilter !== 'All Flights') {
       result = result.filter(f => {
         const status = getDynamicStatus(f);
-        const alerts = getFlightAlerts(f.flight_id);
-        
+        // We only need to check alerts if the activeFilter is 'Maintenance'
+        // Otherwise, avoid calling it inside the loop for massive performance gain.
+        const hasMaintenanceAlert = activeFilter === 'Maintenance' 
+          ? getFlightAlerts(f.flight_id).length > 0 
+          : false;
+          
         switch (activeFilter) {
           case 'Delayed': return Number(f.delay_minutes) > 0;
           case 'Boarding': return status === 'Boarding';
-          case 'Departed': return status === 'Departed';
-          case 'Arrived': return status === 'Arrived';
-          case 'Maintenance': return alerts.length > 0;
-          case 'Security Hold': return status === 'Security Hold';
-          case 'International': return f.is_international === 'True';
-          case 'Domestic': return f.is_international !== 'True';
+          case 'Departed': return f.status === 'Departed';
+          case 'Arrived': return f.status === 'Arrived';
+          case 'Maintenance': return hasMaintenanceAlert;
+          case 'Security Hold': return getDynamicStatus(f) === 'Security Hold';
+          case 'International': return f.is_international === 'true' || f.is_international === '1';
+          case 'Domestic': return f.is_international === 'false' || f.is_international === '0';
           default: return true;
         }
       });

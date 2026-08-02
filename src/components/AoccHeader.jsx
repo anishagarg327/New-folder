@@ -26,7 +26,7 @@ export const AoccHeader = () => {
         {/* Left Side: Branding & Health */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <h1 className="logo-text">Airport Operations Control Center</h1>
+            <h1 className="logo-text" style={{ margin: 0 }}>Airport Operations Control Center</h1>
             <div className="live-badge">LIVE</div>
           </div>
           
@@ -60,10 +60,6 @@ export const AoccHeader = () => {
               value={globalSearchTerm}
               onChange={(e) => setGlobalSearchTerm(e.target.value)}
             />
-            <div style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', display: 'flex', gap: '0.2rem' }}>
-              <kbd style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.6rem', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.05)' }}>Ctrl</kbd>
-              <kbd style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.6rem', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.05)' }}>K</kbd>
-            </div>
           </div>
         </div>
 
@@ -89,14 +85,14 @@ export const AoccHeader = () => {
             >
               {isRunning ? <Pause size={16}/> : <Play size={16} fill="currentColor" />}
             </button>
-            <div style={{ display: 'flex', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', border: '1px solid var(--border-light)' }}>
+            <div style={{ display: 'flex', background: 'var(--bg-surface)', borderRadius: '6px', border: '1px solid var(--border-light)' }}>
               {[1, 5, 15, 60].map(speed => (
                 <button
                   key={speed}
                   onClick={() => setSimulationSpeed(speed)}
                   style={{
                     padding: '0.35rem 0.6rem',
-                    background: simulationSpeed === speed ? 'rgba(255,255,255,0.1)' : 'transparent',
+                    background: simulationSpeed === speed ? 'var(--accent-blue)' : 'transparent',
                     color: simulationSpeed === speed ? 'white' : 'var(--text-muted)',
                     border: 'none',
                     borderRight: speed !== 60 ? '1px solid var(--border-light)' : 'none',
@@ -147,10 +143,10 @@ export const AoccHeader = () => {
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.85rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '6px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-surface)', borderRadius: '6px' }}>
                 <span>Base Score</span><span style={{ color: 'var(--status-green)', fontWeight: 600 }}>100%</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '6px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-surface)', borderRadius: '6px' }}>
                 <span>Active Deductions</span><span style={{ color: 'var(--status-red)', fontWeight: 600 }}>-{100 - healthScore}%</span>
               </div>
             </div>
